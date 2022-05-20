@@ -1,5 +1,5 @@
 
-# J.A.R.V.I.S-Python-AI
+# JArvis01-Python-AI
 
 A Voice Assistant For All Your Daily Work Made In Python
 
@@ -9,13 +9,13 @@ A Voice Assistant For All Your Daily Work Made In Python
 Clone the project
 
 ```bash
-git clone 
+git clone https://github.com/Liven11/JArivs01
 ```
 
 Go to the project directory
 
 ```bash
-cd J.A.R.V.I.S-Python-AI
+cd JArvis01-Python-AI
 ```
 
 Install dependencies
