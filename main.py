@@ -12,6 +12,7 @@ from PIL import Image, ImageGrab
 import time
 import smtplib
 
+
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[0].id)
@@ -116,7 +117,7 @@ if __name__ == '__main__':
         elif 'open chrome' in query:
             print("Opening Chrome Browser...")
             speak("opening chrome browser")
-            chrome = '''Path To Chrome'''
+            chrome = '''"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Google Chrome.lnk"'''
             os.startfile(os.path.join(chrome))
 
         elif 'close chrome' in query:
@@ -124,23 +125,19 @@ if __name__ == '__main__':
             speak("closing chrome browser")
             os.system('TASKKILL /F /IM Google_Chrome.exe')
 
-        elif 'open sublime text' in query:
-            print("opening Sublime Text 3...")
-            speak("opening sublime text 3")
-            text = '''Path To Sublime Text'''
-            os.startfile(os.path.join(text))
+
 
         elif 'open pycharm' in query:
             print("opening PyCharm...")
             speak("opening pycharm")
-            PyCharm = '''Path to pycharm'''
+            PyCharm = '''"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\JetBrains\PyCharm Community Edition 2022.1.1.lnk"'''
             os.startfile(os.path.join(PyCharm))
 
         elif 'go to sleep' in query:
             speak("Okay , I'am Going")
             exit()
 
-        elif "the time" in query:
+        elif "what time is" in query:
             time = datetime.datetime.now().strftime("%H:%M")
             speak(f"Sir , The Time Is {time}")
 
@@ -157,7 +154,7 @@ if __name__ == '__main__':
             os.system("shutdown /s /t 1")
 
         elif "play music list" in query:
-            musicR = '''Path To Your Favorite Music Directory'''
+            musicR = '''"E:\kiki_do_you_love_me_drake_music_video_mp3_45675.mp3"'''
             songs = os.listdir(musicR)
             os.startfile(os.path.join(musicR, songs[0]))
 
@@ -165,7 +162,7 @@ if __name__ == '__main__':
             try:
                 speak("What Message Should I Send")
                 message = takeCommand()
-                sendEmail('''Your Friend Email Address''', message)
+                sendEmail('''livendangi01@gmail.com''', message)
                 speak("E-Mail Sent")
             except Exception as e:
                 print(e)
