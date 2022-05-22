@@ -12,4 +12,4 @@ requests==2.25.1
 soupsieve==2.2.1
 SpeechRecognition==3.8.1
 urllib3==1.26.5
-wikipedia==1.4.0pip install PyAudio
+wikipedia==1.4.0
