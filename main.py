@@ -1,4 +1,4 @@
-# pip install speechrecognition
+# pip install SpeechRecognition
 import speech_recognition as sr
 # pip install pyttsx3
 import pyttsx3
@@ -8,9 +8,10 @@ import wikipedia
 import webbrowser
 import os
 # pip install pillow
-from PIL import Image, ImageGrab
+from PIL import ImageGrab
 import time
 import smtplib
+import sys
 
 
 engine = pyttsx3.init('sapi5')
@@ -62,14 +63,24 @@ def takeCommand():  # This command take input from user with microphone
     return query
 
 def sendEmail(to, message):
+    """Send mail using credentials from environment variables.
+
+    Never hardcode the address or password here. Set them once per session:
+        setx JARVIS_EMAIL "you@gmail.com"
+        setx JARVIS_APP_PASSWORD "your-16-char-app-password"
+    """
+    email = os.environ.get('JARVIS_EMAIL')
+    password = os.environ.get('JARVIS_APP_PASSWORD')
+    if not email or not password:
+        print("Email not configured. Set JARVIS_EMAIL and JARVIS_APP_PASSWORD.")
+        return
+
     server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-    email = '''Your Email Address'''
-    password = '''Your Email Password'''
-    server.login(email, password)
-    contact = to
-    message = message
-    server.sendmail(email, contact, message)
-    server.quit()
+    try:
+        server.login(email, password)
+        server.sendmail(email, to, message)
+    finally:
+        server.quit()
 
 if __name__ == '__main__':
     wishAccordingToTime()
@@ -93,7 +104,7 @@ if __name__ == '__main__':
         elif 'open vs code' in query:
             print("Opening Visual Studio Code...")
             speak("opening Visual Studio Code")
-            webbrowser.open('''Path To Visual Studio Code''')
+            webbrowser.open('code')
 
         elif 'open stack overflow' in query:
             print("opening StackOver Flow...")
@@ -117,29 +128,33 @@ if __name__ == '__main__':
         elif 'open chrome' in query:
             print("Opening Chrome Browser...")
             speak("opening chrome browser")
-            chrome = '''"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Google Chrome.lnk"'''
-            os.startfile(os.path.join(chrome))
+            chrome = os.path.join(
+                os.environ.get('ProgramFiles', r'C:\Program Files'),
+                'Google', 'Chrome', 'Application', 'chrome.exe')
+            os.startfile(chrome)
 
         elif 'close chrome' in query:
             print("closing Chrome Browser...")
             speak("closing chrome browser")
-            os.system('TASKKILL /F /IM Google_Chrome.exe')
+            os.system('TASKKILL /F /IM chrome.exe')
 
 
 
         elif 'open pycharm' in query:
             print("opening PyCharm...")
             speak("opening pycharm")
-            PyCharm = '''"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\JetBrains\PyCharm Community Edition 2022.1.1.lnk"'''
-            os.startfile(os.path.join(PyCharm))
+            pycharm = os.path.join(
+                os.environ.get('LOCALAPPDATA', ''),
+                'JetBrains', 'Toolbox', 'apps', 'PyCharm')
+            os.startfile(pycharm)
 
         elif 'go to sleep' in query:
             speak("Okay , I'am Going")
-            exit()
+            sys.exit(0)
 
         elif "what time is" in query:
-            time = datetime.datetime.now().strftime("%H:%M")
-            speak(f"Sir , The Time Is {time}")
+            now = datetime.datetime.now().strftime("%H:%M")
+            speak(f"Sir , The Time Is {now}")
 
         elif "hello jarvis" in query:
             speak("Hello Sir")
@@ -154,15 +169,19 @@ if __name__ == '__main__':
             os.system("shutdown /s /t 1")
 
         elif "play music list" in query:
-            musicR = '''"E:\kiki_do_you_love_me_drake_music_video_mp3_45675.mp3"'''
+            musicR = os.path.join('E:', 'music')
             songs = os.listdir(musicR)
             os.startfile(os.path.join(musicR, songs[0]))
 
         elif "send mail" in query:
             try:
+                recipient = os.environ.get('JARVIS_CONTACT')
+                if not recipient:
+                    print("No contact set. Set JARVIS_CONTACT to a recipient address.")
+                    continue
                 speak("What Message Should I Send")
                 message = takeCommand()
-                sendEmail('''livendangi01@gmail.com''', message)
+                sendEmail(recipient, message)
                 speak("E-Mail Sent")
             except Exception as e:
                 print(e)
