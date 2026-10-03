@@ -21,9 +21,9 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Set up Python 3.10
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: "3.10"
     - name: Install flake8
@@ -41,9 +41,9 @@ jobs:
     name: Security audit
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Set up Python 3.10
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: "3.10"
     - name: Audit pinned dependencies
@@ -58,9 +58,9 @@ jobs:
     name: Install check (Windows)
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Set up Python 3.10
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: "3.10"
     - name: Install dependencies
@@ -70,5 +70,7 @@ jobs:
     - name: Verify imports resolve
       # Imports are checked without executing the assistant: pyttsx3.init() and
       # the microphone need a desktop session that CI does not have.
+      # Note the distribution is SpeechRecognition but the module is
+      # speech_recognition.
       run: |
-        python -c "import PIL, requests, wikipedia, bs4, SpeechRecognition; print('core imports OK')"
+        python -c "import PIL, requests, wikipedia, bs4, speech_recognition, pyttsx3, comtypes, win32api; print('core imports OK')"
